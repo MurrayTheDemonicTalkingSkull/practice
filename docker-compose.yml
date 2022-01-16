@@ -2,12 +2,15 @@ version: '3'
 
 services:
 
-  haproxy:
-      build: ./haproxy
-      ports:
-        - '80:80'
-      links:
-        - web
+  nginx:
+    image: nginx
+    volumes:
+     - ./templates:/etc/nginx/templates
+    ports:
+     - "80:80"
+    environment:
+     - NGINX_HOST=practice.com
+     - NGINX_PORT=80
   web:
     environment:
       FLASK_ENV: development
@@ -20,13 +23,6 @@ services:
       - 8666
     command: sh -c "cd /www;ls -l;flask run"
 
-  rabbitmq:
-    container_name: rabbitmq
-    image: rabbitmq:latest
-    ports:
-      - 61613:61613
-      - 5662:5672
-      - 8080:15672
 
 
 
