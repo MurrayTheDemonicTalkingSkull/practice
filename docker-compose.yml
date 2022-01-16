@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+
+  haproxy:
+      build: ./haproxy
+      ports:
+        - '80:80'
+      links:
+        - web
+  web:
+    environment:
+      FLASK_ENV: development
+      FLASK_APP: app.py
+      FLASK_RUN_HOST: 0.0.0.0
+      FLASK_RUN_PORT: 8666
+    build: ./web
+    working_dir: /www
+    expose:
+      - 8666
+    command: sh -c "cd /www;ls -l;flask run"
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:latest
+    ports:
+      - 61613:61613
+      - 5662:5672
+      - 8080:15672
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#    environment:
+#      - NODE_ENV=development
+#      - PORT=8000
+
+#    working_dir: /root/njs2
+#    volumes:
+#      - ./njs2:/root/njs2:cached # <--- This will map ./njs2 to /root/njs2 inside the container.
+#
+#  py1:
+#    image: python:3-stretch
+#    command: sh -c "pip install -r requirements.txt && python -m server"
+#    environment:
+#      - PORT=9000
+#      - FLASK_ENV=development
+#    ports:
+#      - '9000:9000'
+#    working_dir: /root/py1
+#    volumes:
+#      - ./py1:/root/py1:cached # <--- This will map ./py1 to /root/py1 inside the container.
+#
+#  go1:
+#    image: golang:1.12-alpine
+#    command: sh -c "go run ."
+#    environment:
+#      - PORT=5000
+#    ports:
+#      - '5000:5000'
+#    working_dir: /root/go1
+#    volumes:
+#      - ./go1:/root/go1:cached # <--- This will map ./py1 to /root/py1 inside the container.
