@@ -18,6 +18,15 @@ services:
     expose:
       - 8666
     command: sh -c "cd /www;ls -l;flask run"
+  rabbit-mq:
+    environment:
+      - RABBITMQ_DEFAULT_USER=username1
+      - RABBITMQ_DEFAULT_PASS=password1
+    build: ./rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+
 
 
 
